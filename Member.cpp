@@ -34,7 +34,7 @@ void Member::setName(std::string newName) { name = newName; }
 // Setter for ID
 void Member::setID(int newID) { ID = newID; }
 
-void Item::borrowItem(Item* item) {
+void Member::borrowItem(Item* item) {
   // Create a new temporary array with +1 size and copy everything from the old
   // borroweditems array to the new
   Item** temp_array = new Item*[borrowedSize + 1];
@@ -50,7 +50,7 @@ void Item::borrowItem(Item* item) {
   borrowedItems = temp_array;
 }
 
-void Item::returnItem(Item* item) {
+void Member::returnItem(Item* item) {
   if (item == nullptr) {
     return;  // Handle the case of a null pointer if necessary
   }
@@ -89,18 +89,34 @@ void Item::returnItem(Item* item) {
   borrowedItems = temp_array;
 }
 
-void Item::displayBorrowedItems() {
-  if (borrowedSize == 0) {
-    std::cout << "This member does not currently have any borrowed Items"
-              << std::endl;
-  } else {
-    std::cout << "Here is a list of this member's Items: " << std::endl;
 
-    for (int i = 0; i < borrowedSize; i++) {
-      std::cout << borrowedItems[i]->getName() << " by "
-                << borrowedItems[i]->getAuthor() << std::endl;
+// Display borrowed items and prompt for details
+void Member::displayBorrowedItems() {
+    if (borrowedSize == 0) {
+        std::cout << "This member does not currently have any borrowed items." << std::endl;
+    } else {
+        std::cout << "Here is a list of this member's items: " << std::endl;
+
+        for (int i = 0; i < borrowedSize; i++) {
+            std::cout << i + 1 << ". " << borrowedItems[i]->getName() << " by "
+                      << borrowedItems[i]->getAuthor() << std::endl;
+        }
+
+        int choice;
+        std::cout << "If you would like to view the details of a specific item, "
+                     "enter the number, "
+                  << "else enter 0 if you would like to exit: ";
+        std::cin >> choice;
+
+        if (choice > 0 && choice <= borrowedSize) {
+            // Show details for the chosen item
+            borrowedItems[choice - 1]->displayInfo(); // Assuming displayInfo is implemented in Item
+        } else if (choice != 0) {
+            std::cout << "Invalid choice. Exiting." << std::endl;
+        }
     }
-  }
 }
+
+
 
 Member::~Member() { delete[] borrowedItems; }
