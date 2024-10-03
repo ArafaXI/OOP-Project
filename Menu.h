@@ -22,6 +22,13 @@ public:
     void adjustTextSize(int newSize);  // Method to adjust text size
     int getSelectedItem() const;
     void highlightSelectedItem();  // Method to highlight the selected item
+        bool isItemSelected(const std::string& item) const {
+        if (selectedItem < 0 || selectedItem >= options.size()) {
+            return false;  // No item selected
+        }
+        return options[selectedItem] == item;
+    }
 };
+
 
 #endif
