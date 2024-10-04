@@ -33,6 +33,9 @@ public:
     // Pure virtual function to display item information
     virtual void displayInfo() = 0;
 
+    // Borrow pure abstract whatever 
+    virtual void Borrow(bool borrow) = 0;
+  
     // Virtual destructor
     virtual ~Item();
 };

@@ -37,8 +37,8 @@ std::string PrintedItem::getBindingType() {
 }
 
 // Borrowing and returning
-void PrintedItem:: Borrow(bool BorrowCondition){
-    this -> isBorrowed = BorrowCondition;
+void PrintedItem::Borrow(bool borrow) {
+    this->isBorrowed = borrow; // Set the borrowing status
 }
 
 bool PrintedItem:: getisBorrowed(){

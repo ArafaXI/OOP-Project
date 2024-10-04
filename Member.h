@@ -13,13 +13,13 @@ class Member {
  public:
     // Constructers
     Member();
-    Member(std::string name, int ID, int borrowedSize);
+    Member(std::string name, int ID);
 
     // Getters
     std::string getName();
     int getID();
     int getBorrowedSize();
-    Item* getBorrowedItems(); 
+    Item** getBorrowedItems(); 
 
     // Setters
     void setName(std::string newName);
