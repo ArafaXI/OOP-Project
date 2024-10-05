@@ -5,6 +5,7 @@
 #include "Book.h"
 #include "Magazine.h"
 #include "Ebook.h"
+#include "Menu.h"
 
 int main() {
     // Get the desktop mode; screen dimensions
@@ -16,7 +17,7 @@ int main() {
     window.setPosition(windowPosition);
     window.setVerticalSyncEnabled(true);
 
-    // Load a font for text input
+    // Load a font for the menu text
     sf::Font font;
     if (!font.loadFromFile("Arial.ttf")) {
         std::cerr << "Error loading font\n";
@@ -27,13 +28,7 @@ int main() {
     std::vector<std::string> menuOptions = {"Add Item", "Register Member", "All items", "Find an Item", "Exit"};
     Menu menu(&window, menuOptions);
 
-    // Create text input fields
-    TextInput titleInput(250, 200, "Title", font);
-    TextInput authorInput(250, 260, "Author", font);
-    TextInput pageInput(250, 320, "Page Count", font);
-    TextInput bindingInput(250, 380, "Binding Type", font);
-
-    // Create a button to add the item
+    // Create a button to add the item (for now, this will be simulated with a placeholder)
     sf::RectangleShape addItemButton(sf::Vector2f(200, 50));
     addItemButton.setPosition(250, 440);
     addItemButton.setFillColor(sf::Color::Green);
@@ -68,14 +63,8 @@ int main() {
                         if (addItemButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                             std::cout << "Add Item Button Clicked!\n";
 
-                            // Get item details from text input fields
-                            std::string title = titleInput.getInput();
-                            std::string author = authorInput.getInput();
-                            int pageCount = std::stoi(pageInput.getInput());
-                            std::string bindingType = bindingInput.getInput();
-
-                            // Create a new PrintedItem with the details
-                            PrintedItem* newItem = new PrintedItem(title, author, pageCount, bindingType);
+                            // Create a new PrintedItem with placeholder details (simulate adding an item)
+                            PrintedItem* newItem = new PrintedItem("Placeholder Title", "Placeholder Author", 100, "Paperback");
 
                             // Add the new item to the itemList
                             itemList.push_back(newItem);
@@ -84,27 +73,13 @@ int main() {
                             std::cout << "Item added:\n";
                             newItem->displayInfo();
 
-                            // Reset inputs and return to main menu
-                            titleInput.deactivate();
-                            authorInput.deactivate();
-                            pageInput.deactivate();
-                            bindingInput.deactivate();
+                            // Return to the main menu
                             inAddItemMode = false;
                         }
                         // Check if the "Back" button was clicked
                         else if (backButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                             std::cout << "Back Button Clicked!\n";
-                            titleInput.deactivate();
-                            authorInput.deactivate();
-                            pageInput.deactivate();
-                            bindingInput.deactivate();
                             inAddItemMode = false;  // Go back to the main menu
-                        } else {
-                            // Handle text input field clicks
-                            titleInput.handleMouseClick(mousePos);
-                            authorInput.handleMouseClick(mousePos);
-                            pageInput.handleMouseClick(mousePos);
-                            bindingInput.handleMouseClick(mousePos);
                         }
                     } else {
                         menu.handleMouseClick(mousePos);
@@ -114,10 +89,6 @@ int main() {
                             if (selectedItem == 0) {  // Add Item Selected
                                 std::cout << "Add item Selected!\n";
                                 inAddItemMode = true;  // Switch to Add Item Mode
-                                titleInput.activate();  // Activate text inputs
-                                authorInput.activate();
-                                pageInput.activate();
-                                bindingInput.activate();
                             } else if (selectedItem == 1) {
                                 std::cout << "Register Member Selected!\n";
                             } else if (selectedItem == 2) {
@@ -135,25 +106,13 @@ int main() {
                         }
                     }
                 }
-            } else if (event.type == sf::Event::TextEntered) {
-                // Handle text input
-                if (inAddItemMode) {
-                    titleInput.handleInput(event);
-                    authorInput.handleInput(event);
-                    pageInput.handleInput(event);
-                    bindingInput.handleInput(event);
-                }
             }
         }
 
         window.clear();
 
         if (inAddItemMode) {
-            // In Add Item Mode, show the input fields and buttons
-            titleInput.draw(window);
-            authorInput.draw(window);
-            pageInput.draw(window);
-            bindingInput.draw(window);
+            // In Add Item Mode, show the add item button and back button
             window.draw(addItemButton);
             window.draw(addItemText);
             window.draw(backButton);
