@@ -5,16 +5,16 @@ DigitalItem::DigitalItem() {
     setAuthor("");
     setTitle("");
     this-> fileSize = 0;
-    this->BindingType = "";
+    this->Format = "";
     this->isBorrowed = false;   
 }
 
 // Parameterized constructor
-DigitalItem::DigitalItem(std::string title, std::string author, double fileSize, std::string BindingType) {
+DigitalItem::DigitalItem(std::string title, std::string author, double fileSize, std::string Format) {
     setAuthor(author);
     setTitle(title);
     this-> fileSize =  fileSize;
-    this->BindingType = BindingType;  // Use the provided BindingType
+    this->Format = Format;  // Use the provided Format
     this->isBorrowed = false;
 }
 
@@ -23,17 +23,17 @@ void DigitalItem::setfileSize(double fileSize) {
     this-> fileSize =  fileSize;
 } 
 
-int DigitalItem::get fileSize() {
+int DigitalItem::getfileSize() {
     return  fileSize;
 }
 
-// Getter and setter for BindingType
-void DigitalItem::setBindingType(std::string BindingType) {
-    this->BindingType = BindingType;
+// Getter and setter for Format
+void DigitalItem::setFormat(std::string Format) {
+    this->Format = Format;
 }
 
-std::string DigitalItem::getBindingType() {
-    return BindingType;
+std::string DigitalItem::getFormat() {
+    return Format;
 }
 
 // Borrowing and returning
@@ -49,8 +49,8 @@ bool DigitalItem:: getisBorrowed(){
 void DigitalItem::displayInfo() {
     std::cout << "Title: " << getTitle() << "\n"
               << "Author: " << getAuthor() << "\n"
-              << "Page Count: " << get fileSize() << "\n"
-              << "Binding Type: " << getBindingType() << "\n"
+              << "Page Count: " << getfileSize() << "\n"
+              << "Binding Type: " << getFormat() << "\n"
               << "Is Borrowed: " << (getisBorrowed() ? "Yes" : "No") << "\n";
 }
 

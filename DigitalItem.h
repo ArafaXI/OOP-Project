@@ -16,8 +16,8 @@ class DigitalItem : public Item {
               std::string Format);
 
   // Getters and Setters for pagecount
-  void setPageCount(double fileSize);
-  int getPageCount();
+  void setfileSize(double fileSize);
+  int getfileSize();
 
   // Getters and setters for Format
   void setFormat(std::string Format);
