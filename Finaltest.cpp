@@ -8,7 +8,7 @@
 #include "Library.h"
 #include "Magazine.h"
 #include "Menu.h"
-
+//To compile type this g++ Finaltest.cpp Menu.cpp PrintedItem.cpp Item.cpp Book.cpp Library.cpp  Member.cpp Magazine.cpp Ebook.cpp DigitalItem.cpp -o sfml-menu -lsfml-graphics -lsfml-window -lsfml-system
 // Textbox class to handle user input with placeholder text
 class Textbox {
 public:
@@ -85,6 +85,7 @@ public:
         label.setCharacterSize(24);
         label.setFillColor(sf::Color::Black);
         label.setPosition(x + 10, y + 5);
+
     }
 
     void draw(sf::RenderWindow &window) {
