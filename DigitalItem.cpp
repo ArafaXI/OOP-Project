@@ -49,8 +49,8 @@ bool DigitalItem:: getisBorrowed(){
 void DigitalItem::displayInfo() {
     std::cout << "Title: " << getTitle() << "\n"
               << "Author: " << getAuthor() << "\n"
-              << "Page Count: " << getfileSize() << "\n"
-              << "Binding Type: " << getFormat() << "\n"
+              << "File Size: " << getfileSize() << "\n"
+              << "Format: " << getFormat() << "\n"
               << "Is Borrowed: " << (getisBorrowed() ? "Yes" : "No") << "\n";
 }
 
