@@ -4,4 +4,5 @@
 #include "Library.h"
 #include "Book.h"
 #include "Magazine.h"
+#include "Ebook.h"
 
