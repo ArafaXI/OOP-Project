@@ -2,7 +2,6 @@
 #define MEMBER_H
 
 #include "Item.h"
-#include "Library.h"
 #include "Ebook.h"
 #include "Book.h"
 #include "Magazine.h"
