@@ -6,6 +6,7 @@
 #include "PrintedItem.h"
 #include "Menu.h"
 
+
 class TextInput {
 public:
     sf::Text text;
