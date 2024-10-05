@@ -10,7 +10,7 @@ class Ebook: public DigitalItem{
     public:
     // constructers
     Ebook();
-    Ebook(std:: string title, std:: string author, int fileSize, std:: string Format, std:: string genre, std:: string publicationDate);
+    Ebook(std:: string title, std:: string author, double fileSize, std:: string Format, std:: string genre, std:: string publicationDate);
 
     // getters and setters for genre attribute
 
