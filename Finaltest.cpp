@@ -148,6 +148,18 @@ int main() {
     std::vector<std::string> addItemOptions = {"Book", "Magazine", "Ebook", "Back"};
     Menu addItemMenu(&window, addItemOptions);
 
+<<<<<<< HEAD
+    // Create a back button to return to the menu
+    sf::RectangleShape backButton(sf::Vector2f(200, 50));
+    backButton.setPosition(250, 510);
+    backButton.setFillColor(sf::Color::Red);
+    sf::Text backText("Back", font, 24);
+    backText.setFillColor(sf::Color::White);
+    backText.setPosition(330, 525);
+
+    return 0;
+}
+=======
     bool inAddItemMenu = false;  // State variable to track whether we're in the "Add Item" sub-menu
     bool inAddBookMenu = false;  // Track whether we're in the "Add Book" sub-menu
     Library library;  // Library to manage items
@@ -242,3 +254,4 @@ int main() {
     return 0;
 }
 
+>>>>>>> 2aadc6f4cd6575e60078fe13ce05f25786da9994
