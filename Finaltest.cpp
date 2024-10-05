@@ -86,13 +86,13 @@ int main() {
             if (selectedSubItem != -1) {
               if (selectedSubItem == 0) {
                 std::cout << "Book Selected!\n";
-                inAddItemMenu = false;  // Return to main menu
+                inAddItemMenu = true;  // Return to main menu
               } else if (selectedSubItem == 1) {
                 std::cout << "Magazine Selected!\n";
-                inAddItemMenu = false;  // Return to main menu
+                inAddItemMenu = true;  // Return to main menu
               } else if (selectedSubItem == 2) {
                 std::cout << "Ebook Selected!\n";
-                inAddItemMenu = false;  // Return to main menu
+                inAddItemMenu = true;  // Return to main menu
               } else if (selectedSubItem == 3) {
                 std::cout << "Back Selected!\n";
                 inAddItemMenu = false;  // Return to main menu
