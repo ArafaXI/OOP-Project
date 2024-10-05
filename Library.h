@@ -7,6 +7,7 @@
 #include "Magazine.h"
 #include "Ebook.h"
 
+
 class Library {
 private:
     Member** memberList;   
