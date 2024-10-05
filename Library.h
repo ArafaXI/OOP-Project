@@ -3,6 +3,9 @@
 
 #include "Member.h"
 #include "Item.h"
+#include "Book.h"
+#include "Magazine.h"
+#include "Ebook.h"
 
 class Library {
 private:
@@ -10,6 +13,8 @@ private:
     Item** itemList;  
     int memberSize;
     int itemSize;
+    int memberCapacity = 10;
+    int itemCapacity = 10;
 
 public:
     Library();
@@ -26,3 +31,4 @@ public:
 };
 
 #endif
+
