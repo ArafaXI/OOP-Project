@@ -9,6 +9,7 @@
 #include "Magazine.h"
 #include "Menu.h"
 //To compile type this g++ Finaltest.cpp Menu.cpp PrintedItem.cpp Item.cpp Book.cpp Library.cpp  Member.cpp Magazine.cpp Ebook.cpp DigitalItem.cpp -o sfml-menu -lsfml-graphics -lsfml-window -lsfml-system
+// To run: ./sfml-menu
 // Textbox class to handle user input with placeholder text
 class Textbox {
 public:
