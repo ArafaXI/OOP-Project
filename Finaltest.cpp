@@ -8,6 +8,7 @@
 #include "Magazine.h"
 #include "Menu.h"
 
+
 int main() {
   // Get the desktop mode; screen dimensions
   sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
@@ -31,7 +32,14 @@ int main() {
       "Borrow Item",   "Return Item",   "Exit"};
   Menu menu(&window, menuOptions);
 
-  while (window.isOpen()) {
+// Define sub-menu options for "Add Item"
+  std::vector<std::string> addItemOptions = {"Book", "Magazine", "Ebook", "Back"};
+
+   Menu addItemMenu(&window, addItemOptions);
+
+  bool inAddItemMenu = false;  // State variable to track whether we're in the "Add Item" sub-menu
+
+ while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
@@ -39,30 +47,56 @@ int main() {
       if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
           sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-          menu.handleMouseClick(mousePos);
 
-          // Check if an option is selected
-          int selectedItem = menu.getSelectedItem();
-          if (selectedItem != -1) {
-            if (selectedItem == 0) {
-              std::cout << "Add Member Selected!\n";
-            } else if (selectedItem == 1) {
-              std::cout << "Add Item Selected!\n";
-            } else if (selectedItem == 2) {
-              std::cout << "Remove Item Selected!\n";
-            } else if (selectedItem == 3) {
-              std::cout << "Remove Member Selected!\n";
-            } else if (selectedItem == 4) {
-              std::cout << "Display Item Selected!\n";
-            } else if (selectedItem == 5) {
-              std::cout << "Display Members Selected!\n";
-            } else if (selectedItem == 6) {
-              std::cout << "Borrow Item Selected!\n";
-            } else if (selectedItem == 7) {
-              std::cout << "Return Item Selected!\n";
-            } else if (selectedItem == 4) {
-              std::cout << "Exit Selected!\n";
-              window.close();  // Exit the application
+          if (!inAddItemMenu) {
+            // Main menu interaction
+            menu.handleMouseClick(mousePos);
+
+            int selectedItem = menu.getSelectedItem();
+            if (selectedItem != -1) {
+              if (selectedItem == 0) {
+                std::cout << "Add Member Selected!\n";
+              } 
+              else if (selectedItem == 1) {
+                std::cout << "Add Item Selected!\n";
+                inAddItemMenu = true;  // Switch to sub-menu
+              } 
+              else if (selectedItem == 2) {
+                std::cout << "Remove Item Selected!\n";
+              } else if (selectedItem == 3) {
+                std::cout << "Remove Member Selected!\n";
+              } else if (selectedItem == 4) {
+                std::cout << "Display Items Selected!\n";
+              } else if (selectedItem == 5) {
+                std::cout << "Display Members Selected!\n";
+              } else if (selectedItem == 6) {
+                std::cout << "Borrow Item Selected!\n";
+              } else if (selectedItem == 7) {
+                std::cout << "Return Item Selected!\n";
+              } else if (selectedItem == 8) {
+                std::cout << "Exit Selected!\n";
+                window.close();  // Exit the application
+              }
+            }
+          } else {
+            // Sub-menu interaction for "Add Item"
+            addItemMenu.handleMouseClick(mousePos);
+            int selectedSubItem = addItemMenu.getSelectedItem();
+            
+            if (selectedSubItem != -1) {
+              if (selectedSubItem == 0) {
+                std::cout << "Book Selected!\n";
+                inAddItemMenu = false;  // Return to main menu
+              } else if (selectedSubItem == 1) {
+                std::cout << "Magazine Selected!\n";
+                inAddItemMenu = false;  // Return to main menu
+              } else if (selectedSubItem == 2) {
+                std::cout << "Ebook Selected!\n";
+                inAddItemMenu = false;  // Return to main menu
+              } else if (selectedSubItem == 3) {
+                std::cout << "Back Selected!\n";
+                inAddItemMenu = false;  // Return to main menu
+              }
             }
           }
         }
@@ -70,7 +104,13 @@ int main() {
     }
 
     window.clear();
-    menu.draw();
+    
+    if (!inAddItemMenu) {
+      menu.draw();  // Draw main menu
+    } else {
+      addItemMenu.draw();  // Draw sub-menu
+    }
+
     window.display();
   }
 
