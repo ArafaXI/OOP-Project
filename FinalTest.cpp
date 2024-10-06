@@ -10,7 +10,7 @@
 #include "Magazine.h"
 #include "Menu.h"
 
-// To compile: FinalTest.cpp Menu.cpp PrintedItem.cpp Item.cpp Book.cpp Library.cpp  Member.cpp Magazine.cpp Ebook.cpp DigitalItem.cpp -o sfml-menu -lsfml-graphics -lsfml-window -lsfml-system 
+// To compile: FinalTest.cpp Menu.cpp PrintedItem.cpp Item.cpp Book.cpp Library.cpp Member.cpp Magazine.cpp Ebook.cpp DigitalItem.cpp -o sfml-menu -lsfml-graphics -lsfml-window -lsfml-system 
 // To run: /sfml-menu
 
 // Textbox class to handle user input, with placeholder text
@@ -134,6 +134,14 @@ int main() {
     Textbox magazinePublicationDateBox(100, 340, 600, 40, font, "Enter Magazine Publication Date");
     Textbox issueNumberBox(100, 400, 600, 40, font, "Enter Issue Number");
 
+    // Textboxes for adding an ebook, similar to book with its own attributes
+    Textbox ebookTitleBox(100, 100, 600, 40, font, "Enter Ebook Title");
+    Textbox ebookAuthorBox(100, 160, 600, 40, font, "Enter Ebook Author");
+    Textbox fileSizeBox(100, 220, 600, 40, font, "Enter File Size (MB)");
+    Textbox formatBox(100, 280, 600, 40, font, "Enter Format");
+    Textbox ebookGenreBox(100, 340, 600, 40, font, "Enter Ebook Genre");
+    Textbox ebookPublicationDateBox(100, 400, 600, 40, font, "Enter Ebook Publication Date");
+
     // Define buttons
     Button addButton(100, 460, 200, 50, "Add to Library", font);
     Button backButton(400, 460, 200, 50, "Back", font);
@@ -152,6 +160,7 @@ int main() {
     bool inAddItemMenu = false; // Are we in the add item menu?
     bool inAddBookMenu = false;  // Are we adding a book?
     bool inAddMagazineMenu = false; // Are we adding a magazine?
+    bool inAddEbookMenu = false; // Are we adding an ebook?
     Library library; // Our library object
 
     while (window.isOpen()) {
@@ -206,8 +215,7 @@ int main() {
                         std::string bindingType = magazineBindingTypeBox.getInput();
                         std::string publicationDate = magazinePublicationDateBox.getInput();
                         int issueNumber = std::stoi(issueNumberBox.getInput());
-                        
-                        //TODO: Add input validation to check that pagecount and issueNumber are ints  
+
                         // Add magazine to library
                         library.addItem(new Magazine(title, author, pageCount, bindingType, publicationDate, issueNumber));
                         std::cout << "Magazine added successfully!\n";
@@ -215,6 +223,35 @@ int main() {
                         inAddItemMenu = true;
                     } else if (backButton.isClicked(window)) {
                         inAddMagazineMenu = false; // Go back to add-item menu
+                        inAddItemMenu = true;
+                    }
+                }
+            } else if (inAddEbookMenu) {
+                // Handle ebook input
+                ebookTitleBox.handleEvent(event, window);
+                ebookAuthorBox.handleEvent(event, window);
+                fileSizeBox.handleEvent(event, window);
+                formatBox.handleEvent(event, window);
+                ebookGenreBox.handleEvent(event, window);
+                ebookPublicationDateBox.handleEvent(event, window);
+
+                if (event.type == sf::Event::MouseButtonPressed) {
+                    if (addButton.isClicked(window)) {
+                        // Gather inputs for ebook
+                        std::string title = ebookTitleBox.getInput();
+                        std::string author = ebookAuthorBox.getInput();
+                        float fileSize = std::stof(fileSizeBox.getInput());
+                        std::string format = formatBox.getInput();
+                        std::string genre = ebookGenreBox.getInput();
+                        std::string publicationDate = ebookPublicationDateBox.getInput();
+
+                        // Add ebook to the library
+                        library.addItem(new Ebook(title, author, fileSize, format, genre, publicationDate));
+                        std::cout << "Ebook added successfully!\n";
+                        inAddEbookMenu = false; // Go back to add-item menu
+                        inAddItemMenu = true;
+                    } else if (backButton.isClicked(window)) {
+                        inAddEbookMenu = false; // Go back to add-item menu
                         inAddItemMenu = true;
                     }
                 }
@@ -238,6 +275,9 @@ int main() {
                         inAddItemMenu = false;
                     } else if (selectedSubItem == 1) {
                         inAddMagazineMenu = true; // Switch to add magazine mode
+                        inAddItemMenu = false;
+                    } else if (selectedSubItem == 2) {
+                        inAddEbookMenu = true; // Switch to add ebook mode
                         inAddItemMenu = false;
                     } else if (selectedSubItem == 3) {
                         inAddItemMenu = false; // Go back to main menu
@@ -266,6 +306,16 @@ int main() {
             magazineBindingTypeBox.draw(window);
             magazinePublicationDateBox.draw(window);
             issueNumberBox.draw(window);
+            addButton.draw(window);
+            backButton.draw(window);
+        } else if (inAddEbookMenu) {
+            // Draw ebook textboxes and buttons
+            ebookTitleBox.draw(window);
+            ebookAuthorBox.draw(window);
+            fileSizeBox.draw(window);
+            formatBox.draw(window);
+            ebookGenreBox.draw(window);
+            ebookPublicationDateBox.draw(window);
             addButton.draw(window);
             backButton.draw(window);
         } else if (inAddItemMenu) {
