@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PrintedItem.h"
 
+// test file for printeditem class
 int main() {
     // Create a PrintedItem using the default constructor
     PrintedItem item1;
