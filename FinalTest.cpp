@@ -8,6 +8,7 @@
 #include "Library.h"
 #include "Magazine.h"
 #include "Menu.h"
+
 //To compile type this g++ Finaltest.cpp Menu.cpp PrintedItem.cpp Item.cpp Book.cpp Library.cpp  Member.cpp Magazine.cpp Ebook.cpp DigitalItem.cpp -o sfml-menu -lsfml-graphics -lsfml-window -lsfml-system
 // To run: ./sfml-menu
 // Textbox class to handle user input with placeholder text
@@ -115,7 +116,7 @@ int main() {
     // Create the window centered on the screen
     sf::RenderWindow window(
         sf::VideoMode(800, 600),
-        "Library System");  // Specify window size (800x600)
+        "Library Management System");  // Specify window size (800x600)
     window.setPosition(windowPosition);
 
     // Load font for textboxes and buttons
