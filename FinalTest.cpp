@@ -119,12 +119,12 @@ int main() {
     }
 
     // Textboxes for adding a book with placeholders
-    Textbox titleBox(100, 100, 600, 40, font, "Enter Title");
-    Textbox authorBox(100, 160, 600, 40, font, "Enter Author");
-    Textbox pageCountBox(100, 220, 600, 40, font, "Enter Page Count");
-    Textbox bindingTypeBox(100, 280, 600, 40, font, "Enter Binding Type");
-    Textbox genreBox(100, 340, 600, 40, font, "Enter Genre");
-    Textbox publicationDateBox(100, 400, 600, 40, font, "Enter Publication Date");
+    Textbox titleBox(100, 100, 600, 40, font, "Enter Book Title");
+    Textbox authorBox(100, 160, 600, 40, font, "Enter Book Author");
+    Textbox pageCountBox(100, 220, 600, 40, font, "Enter Book Page Count");
+    Textbox bindingTypeBox(100, 280, 600, 40, font, "Enter Book Binding Type");
+    Textbox genreBox(100, 340, 600, 40, font, "Enter Book Genre");
+    Textbox publicationDateBox(100, 400, 600, 40, font, "Enter Book Publication Date");
 
     // Textboxes for adding a magazine, same as book but with different attributes
     Textbox magazineTitleBox(100, 100, 600, 40, font, "Enter Magazine Title");
