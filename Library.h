@@ -9,7 +9,7 @@
 
 
 class Library {
-private:
+private: // Set library attributes
     Member** memberList;   
     Item** itemList;  
     int memberSize;
@@ -29,6 +29,7 @@ public:
     void displayMembers();
     void borrowItem(int memberIndex, int itemIndex);
     void returnItem(int memberIndex, int itemIndex);
+    Item** getItemList();
 };
 
 #endif

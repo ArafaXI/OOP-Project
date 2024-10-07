@@ -2,6 +2,7 @@
 #include "Library.h"
 #include "Book.h"
 #include "Magazine.h"
+#include "Ebook.h"
 #include <string>
 
 // Constructor
@@ -29,7 +30,7 @@ Library::~Library() {
 // Add a member
 void Library::addMember(Member* member) {
     if (member == nullptr) {
-        std::cout << "Cannot add a null member!" << std::endl;
+        std::cout << "Cannot add a null member!" << std::endl; // if program tries to input nothing 
         return;
     }
     if (memberSize >= memberCapacity) {
@@ -125,6 +126,7 @@ void Library::displayMembers() {
     }
 }
 
+// Assigns an item to a member
 void Library::borrowItem(int memberIndex, int itemIndex) {
     if (itemIndex < 0 || itemIndex >= itemSize || memberIndex < 0 || memberIndex >= memberSize) {
         std::cout << "Invalid member or item index." << std::endl;
@@ -134,6 +136,7 @@ void Library::borrowItem(int memberIndex, int itemIndex) {
     std::cout << "Item borrowed successfully." << std::endl;
 }
 
+// Removes an item from a member
 void Library::returnItem(int memberIndex, int itemIndex) {
     if (itemIndex < 0 || itemIndex >= itemSize || memberIndex < 0 || memberIndex >= memberSize) {
         std::cout << "Invalid member or item index." << std::endl;
@@ -142,3 +145,6 @@ void Library::returnItem(int memberIndex, int itemIndex) {
     itemList[itemIndex]->Borrow(false);
     std::cout << "Item returned successfully." << std::endl;
 }
+
+// getter for itemlist
+Item** Library:: getItemList(){return itemList;}
