@@ -187,9 +187,7 @@ while (window.isOpen()) {
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 
-                // Debugging: Print out mouse position for verification
-                std::cout << "Mouse Clicked at: " << mousePos.x << ", " << mousePos.y << std::endl;
-
+              
                 if (addMemberButton.isClicked(window)) {
                     std::string memberName = memberNameBox.getInput();
                     std::string memberIDStr = memberIDBox.getInput();
