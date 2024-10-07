@@ -29,7 +29,11 @@ public:
     void displayMembers();
     void borrowItem(int memberIndex, int itemIndex);
     void returnItem(int memberIndex, int itemIndex);
+
+    // getters and setters
     Item** getItemList();
+    int getItemSize();
+    int getMemberSize();
 };
 
 #endif
