@@ -151,9 +151,11 @@ int main() {
     Button backLibraryButton(400, 460, 200, 50, "Back", font);
 
 
+
     // Define buttons
     Button addMemberButton(100, 220, 200, 50, "Add Member", font);
     Button backMemberButton(400, 220, 200, 50, "Back", font);
+    Button backDisplayItemsButton(400, 220, 200, 50, "Back", font);
 
     // Define main menu options
     std::vector<std::string> menuOptions = {
@@ -166,6 +168,7 @@ int main() {
     std::vector<std::string> addItemOptions = {"Book", "Magazine", "Ebook", "Back"};
     Menu addItemMenu(&window, addItemOptions);
 
+    bool inDisplayItemsMenu=false;
     bool inAddMemberMenu=false;
     bool inAddItemMenu = false; // Are we in the add item menu?
     bool inAddBookMenu = false;  // Are we adding a book?
@@ -316,6 +319,10 @@ while (window.isOpen()) {
             else if (selectedItem == 1) {
                 inAddItemMenu = true;  // Switch to add item menu
             } 
+            else if (selectedItem == 4) {
+                inDisplayItemsMenu = true;  // Switch to add item menu
+            } 
+
             else if (selectedItem == 8) {
                 window.close();  // Exit the program
             }
@@ -363,15 +370,30 @@ while (window.isOpen()) {
     } else if (inAddItemMenu) {
         // Draw add-item sub-menu
         addItemMenu.draw();
+    } else if (inDisplayItemsMenu) {
+        // Display items and back button is already handled above
+        float yOffset = 100.0f;  // Starting position for displaying items
+        for (const auto& item : Library.displayItems()) {  // Assuming you have a method to get all items
+            if (Book* book = dynamic_cast<Book*>(item)) { // Only show books
+                sf::Text itemText;
+                itemText.setFont(font);
+                itemText.setCharacterSize(24);
+                itemText.setFillColor(sf::Color::Black);
+                itemText.setPosition(50.0f, yOffset);
+                itemText.setString(book->getTitle() + " by " + book->getAuthor());
+                window.draw(itemText);
+                yOffset += 40.0f;  // Increment for next item
+            }
+        }
+        // Draw the back button
+        backDisplayItemsButton.draw(window);
     } else {
         // Draw main menu
         menu.draw();
     }
 
-
     window.display(); // Update the window
 }
-
 
     return 0;
 }
