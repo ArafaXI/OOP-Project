@@ -142,9 +142,18 @@ int main() {
     Textbox ebookGenreBox(100, 340, 600, 40, font, "Enter Ebook Genre");
     Textbox ebookPublicationDateBox(100, 400, 600, 40, font, "Enter Ebook Publication Date");
 
+     // Textboxes for adding a member
+    Textbox memberNameBox(100, 100, 600, 40, font, "Enter Member Name");
+    Textbox memberIDBox(100, 160, 600, 40, font, "Enter Member ID");
+
     // Define buttons
-    Button addButton(100, 460, 200, 50, "Add to Library", font);
-    Button backButton(400, 460, 200, 50, "Back", font);
+    Button addLibraryButton(100, 460, 200, 50, "Add to Library", font);
+    Button backLibraryButton(400, 460, 200, 50, "Back", font);
+
+
+    // Define buttons
+    Button addMemberButton(100, 220, 200, 50, "Add Member", font);
+    Button backMemberButton(400, 220, 200, 50, "Back", font);
 
     // Define main menu options
     std::vector<std::string> menuOptions = {
@@ -157,177 +166,213 @@ int main() {
     std::vector<std::string> addItemOptions = {"Book", "Magazine", "Ebook", "Back"};
     Menu addItemMenu(&window, addItemOptions);
 
+    bool inAddMemberMenu=false;
     bool inAddItemMenu = false; // Are we in the add item menu?
     bool inAddBookMenu = false;  // Are we adding a book?
     bool inAddMagazineMenu = false; // Are we adding a magazine?
     bool inAddEbookMenu = false; // Are we adding an ebook?
     Library library; // Our library object
 
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) window.close();
+while (window.isOpen()) {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) window.close();
 
-            if (inAddBookMenu) {
-                // Handle book input
-                titleBox.handleEvent(event, window);
-                authorBox.handleEvent(event, window);
-                pageCountBox.handleEvent(event, window);
-                bindingTypeBox.handleEvent(event, window);
-                genreBox.handleEvent(event, window);
-                publicationDateBox.handleEvent(event, window);
+        if (inAddMemberMenu) {
+            // Handle member input
+            memberNameBox.handleEvent(event, window);
+            memberIDBox.handleEvent(event, window);
 
-                if (event.type == sf::Event::MouseButtonPressed) {
-                    if (addButton.isClicked(window)) {
-                        // Gather inputs for book
-                        std::string title = titleBox.getInput();
-                        std::string author = authorBox.getInput();
-                        int pageCount = std::stoi(pageCountBox.getInput());
-                        std::string bindingType = bindingTypeBox.getInput();
-                        std::string genre = genreBox.getInput();
-                        std::string publicationDate = publicationDateBox.getInput();
+            // Debugging: Check if event for mouse click is handled properly
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                
+                // Debugging: Print out mouse position for verification
+                std::cout << "Mouse Clicked at: " << mousePos.x << ", " << mousePos.y << std::endl;
 
-                        // Add book to the library
-                        library.addItem(new Book(title, author, pageCount, bindingType, genre, publicationDate));
-                        std::cout << "Book added successfully!\n";
-                        inAddBookMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
-                    } else if (backButton.isClicked(window)) {
-                        inAddBookMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
+                if (addMemberButton.isClicked(window)) {
+                    std::string memberName = memberNameBox.getInput();
+                    std::string memberIDStr = memberIDBox.getInput();
+
+                    if (!memberName.empty() && !memberIDStr.empty()) {
+                        int memberID = std::stoi(memberIDStr);
+                        library.addMember(new Member(memberName, memberID));
+                        std::cout << "Member added successfully!\n";
+                        inAddMemberMenu = false; // Return to main menu
+                    } else {
+                        std::cout << "Error: Member name or ID is empty.\n";
                     }
-                }
-            } else if (inAddMagazineMenu) {
-                // Handle magazine input
-                magazineTitleBox.handleEvent(event, window);
-                magazineAuthorBox.handleEvent(event, window);
-                magazinePageCountBox.handleEvent(event, window);
-                magazineBindingTypeBox.handleEvent(event, window);
-                magazinePublicationDateBox.handleEvent(event, window);
-                issueNumberBox.handleEvent(event, window);
-
-                if (event.type == sf::Event::MouseButtonPressed) { 
-                    if (addButton.isClicked(window)) {
-                        // Gather inputs for magazine
-                        std::string title = magazineTitleBox.getInput();
-                        std::string author = magazineAuthorBox.getInput();
-                        int pageCount = std::stoi(magazinePageCountBox.getInput());
-                        std::string bindingType = magazineBindingTypeBox.getInput();
-                        std::string publicationDate = magazinePublicationDateBox.getInput();
-                        int issueNumber = std::stoi(issueNumberBox.getInput());
-
-                        // Add magazine to library
-                        library.addItem(new Magazine(title, author, pageCount, bindingType, publicationDate, issueNumber));
-                        std::cout << "Magazine added successfully!\n";
-                        inAddMagazineMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
-                    } else if (backButton.isClicked(window)) {
-                        inAddMagazineMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
-                    }
-                }
-            } else if (inAddEbookMenu) {
-                // Handle ebook input
-                ebookTitleBox.handleEvent(event, window);
-                ebookAuthorBox.handleEvent(event, window);
-                fileSizeBox.handleEvent(event, window);
-                formatBox.handleEvent(event, window);
-                ebookGenreBox.handleEvent(event, window);
-                ebookPublicationDateBox.handleEvent(event, window);
-
-                if (event.type == sf::Event::MouseButtonPressed) {
-                    if (addButton.isClicked(window)) {
-                        // Gather inputs for ebook
-                        std::string title = ebookTitleBox.getInput();
-                        std::string author = ebookAuthorBox.getInput();
-                        float fileSize = std::stof(fileSizeBox.getInput());
-                        std::string format = formatBox.getInput();
-                        std::string genre = ebookGenreBox.getInput();
-                        std::string publicationDate = ebookPublicationDateBox.getInput();
-
-                        // Add ebook to the library
-                        library.addItem(new Ebook(title, author, fileSize, format, genre, publicationDate));
-                        std::cout << "Ebook added successfully!\n";
-                        inAddEbookMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
-                    } else if (backButton.isClicked(window)) {
-                        inAddEbookMenu = false; // Go back to add-item menu
-                        inAddItemMenu = true;
-                    }
-                }
-            } else if (event.type == sf::Event::MouseButtonPressed) {
-                if (!inAddItemMenu) {
-                    // Main menu interactions
-                    menu.handleMouseClick(sf::Mouse::getPosition(window));
-                    int selectedItem = menu.getSelectedItem();
-                    if (selectedItem == 1) {
-                        inAddItemMenu = true;  // Switch to add item menu
-                    } else if (selectedItem == 8) {
-                        window.close();  // Exit the program
-                    }
-                } else {
-                    // Sub-menu interactions for adding items
-                    addItemMenu.handleMouseClick(sf::Mouse::getPosition(window));
-                    int selectedSubItem = addItemMenu.getSelectedItem();
-
-                    if (selectedSubItem == 0) {
-                        inAddBookMenu = true; // Switch to add book mode
-                        inAddItemMenu = false;
-                    } else if (selectedSubItem == 1) {
-                        inAddMagazineMenu = true; // Switch to add magazine mode
-                        inAddItemMenu = false;
-                    } else if (selectedSubItem == 2) {
-                        inAddEbookMenu = true; // Switch to add ebook mode
-                        inAddItemMenu = false;
-                    } else if (selectedSubItem == 3) {
-                        inAddItemMenu = false; // Go back to main menu
-                    }
+                } else if (backMemberButton.isClicked(window)) {
+                    inAddMemberMenu = false; // Go back to main menu
                 }
             }
-        }
+        } else if (inAddBookMenu) {
+            // Handle book input
+            titleBox.handleEvent(event, window);
+            authorBox.handleEvent(event, window);
+            pageCountBox.handleEvent(event, window);
+            bindingTypeBox.handleEvent(event, window);
+            genreBox.handleEvent(event, window);
+            publicationDateBox.handleEvent(event, window);
 
-        window.clear();
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (addLibraryButton.isClicked(window)) {
+                    std::string title = titleBox.getInput();
+                    std::string author = authorBox.getInput();
+                    int pageCount = std::stoi(pageCountBox.getInput());
+                    std::string bindingType = bindingTypeBox.getInput();
+                    std::string genre = genreBox.getInput();
+                    std::string publicationDate = publicationDateBox.getInput();
 
-        if (inAddBookMenu) {
-            // Draw book textboxes and buttons
-            titleBox.draw(window);
-            authorBox.draw(window);
-            pageCountBox.draw(window);
-            bindingTypeBox.draw(window);
-            genreBox.draw(window);
-            publicationDateBox.draw(window);
-            addButton.draw(window);
-            backButton.draw(window);
+                    library.addItem(new Book(title, author, pageCount, bindingType, genre, publicationDate));
+                    std::cout << "Book added successfully!\n";
+                    inAddBookMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                } else if (backLibraryButton.isClicked(window)) {
+                    inAddBookMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                }
+            }
         } else if (inAddMagazineMenu) {
-            // Draw magazine textboxes and buttons
-            magazineTitleBox.draw(window);
-            magazineAuthorBox.draw(window);
-            magazinePageCountBox.draw(window);
-            magazineBindingTypeBox.draw(window);
-            magazinePublicationDateBox.draw(window);
-            issueNumberBox.draw(window);
-            addButton.draw(window);
-            backButton.draw(window);
-        } else if (inAddEbookMenu) {
-            // Draw ebook textboxes and buttons
-            ebookTitleBox.draw(window);
-            ebookAuthorBox.draw(window);
-            fileSizeBox.draw(window);
-            formatBox.draw(window);
-            ebookGenreBox.draw(window);
-            ebookPublicationDateBox.draw(window);
-            addButton.draw(window);
-            backButton.draw(window);
-        } else if (inAddItemMenu) {
-            // Draw add-item sub-menu
-            addItemMenu.draw();
-        } else {
-            // Draw main menu
-            menu.draw();
-        }
+            // Handle magazine input
+            magazineTitleBox.handleEvent(event, window);
+            magazineAuthorBox.handleEvent(event, window);
+            magazinePageCountBox.handleEvent(event, window);
+            magazineBindingTypeBox.handleEvent(event, window);
+            magazinePublicationDateBox.handleEvent(event, window);
+            issueNumberBox.handleEvent(event, window);
 
-        window.display(); // Update the window
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (addLibraryButton.isClicked(window)) {
+                    std::string title = magazineTitleBox.getInput();
+                    std::string author = magazineAuthorBox.getInput();
+                    int pageCount = std::stoi(magazinePageCountBox.getInput());
+                    std::string bindingType = magazineBindingTypeBox.getInput();
+                    std::string publicationDate = magazinePublicationDateBox.getInput();
+                    int issueNumber = std::stoi(issueNumberBox.getInput());
+
+                    library.addItem(new Magazine(title, author, pageCount, bindingType, publicationDate, issueNumber));
+                    std::cout << "Magazine added successfully!\n";
+                    inAddMagazineMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                } else if (backLibraryButton.isClicked(window)) {
+                    inAddMagazineMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                }
+            }
+        } else if (inAddEbookMenu) {
+            // Handle ebook input
+            ebookTitleBox.handleEvent(event, window);
+            ebookAuthorBox.handleEvent(event, window);
+            fileSizeBox.handleEvent(event, window);
+            formatBox.handleEvent(event, window);
+            ebookGenreBox.handleEvent(event, window);
+            ebookPublicationDateBox.handleEvent(event, window);
+
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (addLibraryButton.isClicked(window)) {
+                    std::string title = ebookTitleBox.getInput();
+                    std::string author = ebookAuthorBox.getInput();
+                    float fileSize = std::stof(fileSizeBox.getInput());
+                    std::string format = formatBox.getInput();
+                    std::string genre = ebookGenreBox.getInput();
+                    std::string publicationDate = ebookPublicationDateBox.getInput();
+
+                    library.addItem(new Ebook(title, author, fileSize, format, genre, publicationDate));
+                    std::cout << "Ebook added successfully!\n";
+                    inAddEbookMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                } else if (backLibraryButton.isClicked(window)) {
+                    inAddEbookMenu = false; // Go back to add-item menu
+                    inAddItemMenu = true;
+                }
+            }
+        } else if (inAddItemMenu) {
+            // Handle add-item sub-menu interactions
+            if (event.type == sf::Event::MouseButtonPressed) {
+                addItemMenu.handleMouseClick(sf::Mouse::getPosition(window));
+                int selectedSubItem = addItemMenu.getSelectedItem();
+
+                if (selectedSubItem == 0) {
+                    inAddBookMenu = true;
+                    inAddItemMenu = false;
+                } else if (selectedSubItem == 1) {
+                    inAddMagazineMenu = true;
+                    inAddItemMenu = false;
+                } else if (selectedSubItem == 2) {
+                    inAddEbookMenu = true;
+                    inAddItemMenu = false;
+                } else if (selectedSubItem == 3) {
+                    inAddItemMenu = false; // Go back to main menu
+                }
+            }
+        } else if (event.type == sf::Event::MouseButtonPressed) {
+            // Main menu interactions
+            menu.handleMouseClick(sf::Mouse::getPosition(window));
+            int selectedItem = menu.getSelectedItem();
+
+            if (selectedItem == 0) {
+                inAddMemberMenu = true;  // Switch to add item menu
+            } 
+            
+            else if (selectedItem == 1) {
+                inAddItemMenu = true;  // Switch to add item menu
+            } 
+            else if (selectedItem == 8) {
+                window.close();  // Exit the program
+            }
+        }
     }
+
+    window.clear();
+
+    if (inAddMemberMenu) {
+        // Draw member textboxes and buttons
+        memberNameBox.draw(window);
+        memberIDBox.draw(window);
+        addMemberButton.draw(window);
+        backMemberButton.draw(window);
+    } else if (inAddBookMenu) {
+        // Draw book textboxes and buttons
+        titleBox.draw(window);
+        authorBox.draw(window);
+        pageCountBox.draw(window);
+        bindingTypeBox.draw(window);
+        genreBox.draw(window);
+        publicationDateBox.draw(window);
+        addLibraryButton.draw(window);
+        backLibraryButton.draw(window);
+    } else if (inAddMagazineMenu) {
+        // Draw magazine textboxes and buttons
+        magazineTitleBox.draw(window);
+        magazineAuthorBox.draw(window);
+        magazinePageCountBox.draw(window);
+        magazineBindingTypeBox.draw(window);
+        magazinePublicationDateBox.draw(window);
+        issueNumberBox.draw(window);
+        addLibraryButton.draw(window);
+        backLibraryButton.draw(window);
+    } else if (inAddEbookMenu) {
+        // Draw ebook textboxes and buttons
+        ebookTitleBox.draw(window);
+        ebookAuthorBox.draw(window);
+        fileSizeBox.draw(window);
+        formatBox.draw(window);
+        ebookGenreBox.draw(window);
+        ebookPublicationDateBox.draw(window);
+        addLibraryButton.draw(window);
+        backLibraryButton.draw(window);
+    } else if (inAddItemMenu) {
+        // Draw add-item sub-menu
+        addItemMenu.draw();
+    } else {
+        // Draw main menu
+        menu.draw();
+    }
+
+    window.display(); // Update the window
+}
+
 
     return 0;
 }
