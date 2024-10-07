@@ -4,6 +4,8 @@
 #include "Magazine.h"
 #include "Ebook.h"
 #include <string>
+#include <vector>
+
 
 // Constructor
 Library::Library() {
@@ -148,3 +150,16 @@ void Library::returnItem(int memberIndex, int itemIndex) {
 
 // getter for itemlist
 Item** Library:: getItemList(){return itemList;}
+
+// Getter for item size
+int Library::getItemSize() const {
+    return itemSize;
+}
+
+std::vector<Item*> Library::getItems() const {
+    std::vector<Item*> items;
+    for (int i = 0; i < itemSize; ++i) {
+        items.push_back(itemList[i]); // Add each item to the vector
+    }
+    return items; // Return the vector containing the items
+}
