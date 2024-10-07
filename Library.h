@@ -6,7 +6,7 @@
 #include "Book.h"
 #include "Magazine.h"
 #include "Ebook.h"
-
+#include <vector>
 
 class Library {
 private: // Set library attributes
@@ -29,11 +29,11 @@ public:
     void displayMembers();
     void borrowItem(int memberIndex, int itemIndex);
     void returnItem(int memberIndex, int itemIndex);
-
-    // getters and setters
     Item** getItemList();
-    int getItemSize();
-    int getMemberSize();
+
+    int getItemSize() const;  // New function to get the number of items
+
+    std::vector<Item*> getItems() const; // Declaration
 };
 
 #endif
