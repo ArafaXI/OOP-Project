@@ -370,6 +370,7 @@ while (window.isOpen()) {
         menu.draw();
     }
 
+
     window.display(); // Update the window
 }
 
