@@ -150,5 +150,5 @@ void Library::returnItem(int memberIndex, int itemIndex) {
 Item** Library:: getItemList(){return itemList;}
 
 // getter for item and member size
-int Library:: getItemSize(){return itemList;}
+int Library:: getItemSize(){return itemSize;}
 int Library:: getMemberSize(){return memberSize;}
