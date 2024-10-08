@@ -2,6 +2,8 @@
 #include <iostream>
 #include <limits>  // For std::numeric_limits
 #include <string>
+#include <vector>
+
 #include "Book.h"
 #include "Ebook.h"  // Include your Ebook header
 #include "Library.h"
@@ -278,10 +280,28 @@ int main() {
                 }
                 break;
             }
-            case 3:
-                mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
-                         "Display Members functionality not implemented yet.\n");
-                break;
+            case 3: {
+    clear();  // Clear the screen before displaying members
+    
+    Member** members = library->getMemberList();  // Assuming getMemberList() returns Member**
+    int numMembers = library->getMemberSize();    // Get the number of members
+    
+    mvprintw(maxY / 2 - 5, (maxX - 15) / 2, "List of Members:");
+    
+    if (numMembers == 0) {
+        mvprintw(maxY / 2 - 3, (maxX - 30) / 2, "No members found in the library.");
+    } else {
+        for (int i = 0; i < numMembers; i++) {
+            mvprintw(maxY / 2 - 3 + i, (maxX - 50) / 2, "Member %d: Name: %s, ID: %d",
+                     i + 1, members[i]->getName().c_str(), members[i]->getID());
+        }
+    }
+    
+    mvprintw(maxY / 2 + numMembers + 1, (maxX - 24) / 2, "Press any key to go back...");
+    refresh();  // Show all the updated output on the screen
+    getch();    // Wait for the user to press a key
+    break;
+}
             case 4:
                 mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
                          "Display Items functionality not implemented yet.\n");

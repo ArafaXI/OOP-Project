@@ -152,14 +152,17 @@ void Library::returnItem(int memberIndex, int itemIndex) {
 Item** Library:: getItemList(){return itemList;}
 
 // Getter for item size
-int Library::getItemSize() const {
+int Library::getItemSize(){
     return itemSize;
 }
 
-std::vector<Item*> Library::getItems() const {
-    std::vector<Item*> items;
-    for (int i = 0; i < itemSize; ++i) {
-        items.push_back(itemList[i]); // Add each item to the vector
-    }
-    return items; // Return the vector containing the items
+// getter for member size
+int Library:: getMemberSize(){
+    return memberSize;
 }
+
+// getters for member list
+Member** Library:: getMemberList(){return memberList;}
+
+
+
