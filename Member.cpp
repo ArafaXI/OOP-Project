@@ -52,9 +52,9 @@ void Member::borrowItem(Item* item) {
 }
 
 // Return item
-void Member::returnItem(Item* item) {
+bool Member::returnItem(Item* item) {
     if (item == nullptr) {
-        return;  // Handle the case of a null pointer if necessary
+        return false;  // Handle the case of a null pointer
     }
 
     // Find the index of the item to be removed
@@ -68,7 +68,7 @@ void Member::returnItem(Item* item) {
 
     // If the item was not found, do nothing
     if (indexToRemove == -1) {
-        return;
+        return false;  // Indicate that the item was not found
     }
 
     // Create a new temporary array with -1 size
@@ -89,6 +89,9 @@ void Member::returnItem(Item* item) {
 
     // Assign the new array to borrowedItems
     borrowedItems = temp_array;
+
+    return true;
+
 }
 
 // Display borrowed items and prompt for details

@@ -31,7 +31,7 @@ class Member {
 
     // Unique functions
     void borrowItem(Item* item); // Adds an Item to the member's collection of items.
-    void returnItem(Item* item); // Removes an Item from the member's borrowed list
+    bool returnItem(Item* item); // Removes an Item from the member's borrowed list
     void displayBorrowedItems(); // Prints out the whole collection of Items that the user currently has, including their Title and author
 
     // Destructors

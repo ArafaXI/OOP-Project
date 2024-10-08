@@ -35,6 +35,7 @@ public:
     int getItemSize();  // New function to get the number of items
     int getMemberSize();
 
+
     std::vector<Item*> getItems() const; // Declaration
 };
 
