@@ -314,10 +314,43 @@ int main() {
                 mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
                          "Return Item functionality not implemented yet.\n");
                 break;
-            case 7:
-                mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
-                         "Remove Member functionality not implemented yet.\n");
-                break;
+ case 7: {
+    clear();  // Clear the screen before displaying members
+
+    Member** members = library->getMemberList();  // Assuming getMemberList() returns Member**
+    int numMembers = library->getMemberSize();    // Get the number of members
+
+    if (numMembers == 0) {
+        mvprintw(maxY / 2, (maxX - 30) / 2, "No members found in the library.");
+    } else {
+        mvprintw(maxY / 2 - 5, (maxX - 15) / 2, "Select a member to remove:");
+        
+        // Display all members
+        for (int i = 0; i < numMembers; i++) {
+            mvprintw(maxY / 2 - 4 + i, (maxX - 50) / 2, "Member %d: Name: %s, ID: %d",
+                     i + 1, members[i]->getName().c_str(), members[i]->getID());
+        }
+
+        mvprintw(maxY / 2 + numMembers, (maxX - 35) / 2, "Enter the index of the member to remove: ");
+        refresh();
+
+        int memberIndex = -1;
+        scanw("%d", &memberIndex);  // Read the index input
+        
+        if (memberIndex < 1 || memberIndex > numMembers) {
+            mvprintw(maxY / 2 + numMembers + 2, (maxX - 30) / 2, "Invalid index! Press any key to go back.");
+        } else {
+            // Remove the selected member (subtract 1 to match 0-based index)
+            library->removeMember(memberIndex - 1);
+            mvprintw(maxY / 2 + numMembers + 2, (maxX - 30) / 2, "Member removed successfully!");
+        }
+    }
+
+    mvprintw(maxY / 2 + numMembers + 4, (maxX - 24) / 2, "Press any key to return to the main menu.");
+    refresh();  // Show all the updated output on the screen
+    getch();    // Wait for the user to press a key
+    break;
+}
             case 8:
                 mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
                          "Remove Item functionality not implemented yet.\n");
