@@ -12,8 +12,7 @@ class PrintedItem : public Item {
  public:
   // Constructers
   PrintedItem();
-  PrintedItem(std::string title, std::string author, int PageCount,
-              std::string BindingType);
+  PrintedItem(std::string title, std::string author, int PageCount, std::string BindingType);
 
   // Getters and Setters for pagecount
   void setPageCount(int PageCount);
@@ -24,7 +23,7 @@ class PrintedItem : public Item {
   std::string getBindingType();
 
   // Borrowing conditions
-  void Borrow(bool BorrowCondition); // For both borrowing and returning
+  void Borrow(bool BorrowCondition);  // For both borrowing and returning
   bool getisBorrowed();
 
   // displayitems
