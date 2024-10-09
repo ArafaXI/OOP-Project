@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -Wall -g
 
 # Source files
-SRCS = Arafa.cpp Member.cpp Library.cpp Item.cpp PrintedItem.cpp DigitalItem.cpp Book.cpp Magazine.cpp Ebook.cpp
+SRCS = Librarymanagement.cpp Member.cpp Library.cpp Item.cpp PrintedItem.cpp DigitalItem.cpp Book.cpp Magazine.cpp Ebook.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
