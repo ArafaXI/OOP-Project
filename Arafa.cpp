@@ -1,20 +1,20 @@
 #include <ncurses.h>
 
 #include <iostream>
-#include <limits>  // For std::numeric_limits
+#include <limits>  // for error handling
 #include <string>
 #include <vector>
 
 #include "Book.h"
-#include "Ebook.h"  // Include your Ebook header
+#include "Ebook.h"
 #include "Library.h"
-#include "Magazine.h"  // Include your Magazine header
+#include "Magazine.h"
 #include "Member.h"
 
-// to compile: g++ -o ncursus ncursus.cpp Member.cpp Magazine.cpp Book.cpp
+// to compile: g++ -o ncursus Arafa.cpp Member.cpp Magazine.cpp Book.cpp
 // Ebook.cpp PrintedItem.cpp DigitalItem.cpp Item.cpp Library.cpp -lncurses to
 // run:
-// ./ncursus
+// ./Arafa
 
 int main() {
   initscr();  // Start ncurses mode
@@ -28,11 +28,35 @@ int main() {
     int maxY, maxX;
     getmaxyx(stdscr, maxY, maxX);  // Get the number of rows and columns
 
-    // Draw the pillars on the left (column 0) and right (column maxX - 1)
-    for (int i = 0; i < maxY; i++) {
-      mvprintw(i, 30, "|");         // Left pillar at column 0
-      mvprintw(i, maxX - 29, "|");  // Right pillar at column maxX - 1
-    }
+    // Draw an Ascii book on the left
+    mvprintw(maxY/2 - 5, 0 , R"(
+        _.-"\
+    _.-"     \
+ ,-"          \
+( \            \
+ \ \            \
+  \ \            \
+   \ \         _.-;
+    \ \    _.-"   :
+     \ \,-"    _.-"
+      \(   _.-"  -shimrod
+       `--")");
+
+           // Draw an Ascii book on the right
+    mvprintw(maxY/2 - 5, 20 , R"(
+        _.-"\
+    _.-"     \
+ ,-"          \
+( \            \
+ \ \            \
+  \ \            \
+   \ \         _.-;
+    \ \    _.-"   :
+     \ \,-"    _.-"
+      \(   _.-"  
+       `--")");
+
+    
 
     // Centering the menu title
     std::string title = "Library Management System Menu:";
@@ -53,7 +77,8 @@ int main() {
     refresh();  // Refresh to show the output
 
     // Read an integer input from the user with error handling
-    if (scanw("%d", &choice) != 1) {  // Check if input is a valid integer
+    if (scanw("%d", &choice) !=
+        1) {  // Check if input is a valid integer for error handling
       mvprintw(maxY / 2 + 6, (maxX - 36) / 2,
                "Invalid input! Please enter a number between 1 and 9.\n");
       choice = 0;  // Reset choice to avoid executing any cases
@@ -71,7 +96,7 @@ int main() {
         refresh();
         char nameBuffer[100];
         scanw("%s", nameBuffer);        // Read title
-        std::string name = nameBuffer;  // Convert to std::string
+        std::string name = nameBuffer;  // converts to string
 
         int memberID;
         while (true) {  // Loop until valid input is received
@@ -318,77 +343,187 @@ int main() {
         getch();    // Wait for the user to press a key
         break;
       }
-      case 4:
-        mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
-                 "Display Items functionality not implemented yet.\n");
-        break;
+      case 4: {
+        int itemChoice;  // Variable to store the item choice
+        while (true) {
+          clear();
+
+          Item** items =
+              library->getItemList();  // Assuming getItemList() returns Item**
+          int numItems = library->getItemSize();  // Get the number of items
+
+          mvprintw(maxY / 2 + 6, (maxX - 26) / 2, "List of Items:\n");
+
+          if (numItems == 0) {
+            mvprintw(maxY / 2 - 3, (maxX - 30) / 2,
+                     "No items found in the library.");
+          } else {
+            for (int i = 0; i < numItems; i++) {
+              std::string itemType;
+
+              // Determine the type of the item
+              if (dynamic_cast<Book*>(items[i])) {
+                itemType = "Book";
+              } else if (dynamic_cast<Magazine*>(items[i])) {
+                itemType = "Magazine";
+              } else if (dynamic_cast<Ebook*>(items[i])) {
+                itemType = "Ebook";
+              } else {
+                itemType = "Unknown";  // Fallback for safety
+              }
+
+              // Print item details including type
+              mvprintw(maxY / 2 - 3 + i, (maxX - 60) / 2, "%d. [%s] %s by %s",
+                       i + 1, itemType.c_str(), items[i]->getTitle().c_str(),
+                       items[i]->getAuthor().c_str());
+            }
+          }
+
+          // Ask the user to select an item to view more details or 0 to go back
+          mvprintw(maxY / 2 + numItems + 1, (maxX - 30) / 2,
+                   "Enter the item number to view details or 0 to go back: ");
+          refresh();
+
+          scanw("%d", &itemChoice);  // Read the user's choice for item number
+
+          if (itemChoice == 0) {
+            break;  // Exit the loop to go back to the main menu
+          } else if (itemChoice > 0 && itemChoice <= numItems) {
+            clear();
+            Item* selectedItem =
+                items[itemChoice - 1];  // Get the selected item
+
+            // Display detailed information based on the item type
+            mvprintw(maxY / 2 - 5, (maxX - 40) / 2, "Item Details:\n");
+            mvprintw(maxY / 2 - 4, (maxX - 50) / 2, "Title: %s",
+                     selectedItem->getTitle().c_str());
+            mvprintw(maxY / 2 - 3, (maxX - 50) / 2, "Author: %s",
+                     selectedItem->getAuthor().c_str());
+
+            // You can extend this to include more specific details
+            if (dynamic_cast<Book*>(selectedItem)) {
+              Book* book = dynamic_cast<Book*>(selectedItem);
+              mvprintw(maxY / 2 - 2, (maxX - 50) / 2, "Page Count: %d",
+                       book->getPageCount());
+              mvprintw(maxY / 2 - 1, (maxX - 50) / 2, "Binding Type: %s",
+                       book->getBindingType().c_str());
+              mvprintw(maxY / 2, (maxX - 50) / 2, "Genre: %s",
+                       book->getGenre().c_str());
+              mvprintw(maxY / 2 + 1, (maxX - 50) / 2, "Publication Date: %s",
+                       book->getPublicationDate().c_str());
+            } else if (dynamic_cast<Magazine*>(selectedItem)) {
+              Magazine* magazine = dynamic_cast<Magazine*>(selectedItem);
+              mvprintw(maxY / 2 - 2, (maxX - 50) / 2, "Issue Number: %d",
+                       magazine->getIssueNumber());
+              mvprintw(maxY / 2 - 1, (maxX - 50) / 2, "Page Count: %d",
+                       magazine->getPageCount());
+              mvprintw(maxY / 2, (maxX - 50) / 2, "Binding Type: %s",
+                       magazine->getBindingType().c_str());
+              mvprintw(maxY / 2 + 1, (maxX - 50) / 2, "Publication Date: %s",
+                       magazine->getPublicationDate().c_str());
+            } else if (dynamic_cast<Ebook*>(selectedItem)) {
+              Ebook* ebook = dynamic_cast<Ebook*>(selectedItem);
+              mvprintw(maxY / 2 - 2, (maxX - 50) / 2, "File Size: %d MB",
+                       ebook->getfileSize());
+              mvprintw(maxY / 2 - 1, (maxX - 50) / 2, "Format: %s",
+                       ebook->getFormat().c_str());
+              mvprintw(maxY / 2, (maxX - 50) / 2, "Genre: %s",
+                       ebook->getGenre().c_str());
+              mvprintw(maxY / 2 + 1, (maxX - 50) / 2, "Publication Date: %s",
+                       ebook->getPublicationDate().c_str());
+            }
+
+            mvprintw(maxY / 2 + 2, (maxX - 30) / 2,
+                     "Press any key to go back...");
+            refresh();
+            getch();  // Wait for the user to press a key
+          } else {
+            // Invalid choice
+            mvprintw(maxY / 2 + numItems + 3, (maxX - 30) / 2,
+                     "Invalid choice! Press any key to try again...");
+            refresh();
+            getch();  // Wait for the user to press a key
+          }
+        }
+
+        break;  // Exit the case to return to the main menu
+      }
       case 5: {
-    // Get the number of members and items
-    int memberCount = library->getMemberSize();  // Method to get member count
-    int itemCount = library->getItemSize();      // Method to get item count
+        // Get the number of members and items
+        int memberCount =
+            library->getMemberSize();            // Method to get member count
+        int itemCount = library->getItemSize();  // Method to get item count
 
-    // Create arrays to store member and item pointers
-    Member** membersArray = new Member*[memberCount];
-    Item** itemsArray = new Item*[itemCount];
+        // Create arrays to store member and item pointers
+        Member** membersArray = new Member*[memberCount];
+        Item** itemsArray = new Item*[itemCount];
 
-    // Populate member and item arrays
-    for (int i = 0; i < memberCount; ++i) {
-        membersArray[i] = library->getMemberList()[i];
-    }
-    for (int j = 0; j < itemCount; ++j) {
-        itemsArray[j] = library->getItemList()[j];
-    }
-
-    // Member Selection Submenu
-    int memberIndex = -1;
-    while (true) {
-        clear();  // Clear screen for the submenu
-        mvprintw(maxY / 2 - 6, (maxX - 30) / 2, "Select a member to borrow an item:");
+        // Populate member and item arrays
         for (int i = 0; i < memberCount; ++i) {
-            mvprintw(maxY / 2 - 5 + i, (maxX - 30) / 2, "%d: %s (ID: %d)", i + 1,
-                     membersArray[i]->getName().c_str(), membersArray[i]->getID());
+          membersArray[i] = library->getMemberList()[i];
+        }
+        for (int j = 0; j < itemCount; ++j) {
+          itemsArray[j] = library->getItemList()[j];
         }
 
-        // Get user input for member selection
-        mvprintw(maxY / 2 + memberCount - 4, (maxX - 30) / 2, "Enter member index (or 0 to go back): ");
-        scanw("%d", &memberIndex);
+        // Member Selection Submenu
+        int memberIndex = -1;
+        while (true) {
+          clear();  // Clear screen for the submenu
+          mvprintw(maxY / 2 - 6, (maxX - 30) / 2,
+                   "Select a member to borrow an item:");
+          for (int i = 0; i < memberCount; ++i) {
+            mvprintw(maxY / 2 - 5 + i, (maxX - 30) / 2, "%d: %s (ID: %d)",
+                     i + 1, membersArray[i]->getName().c_str(),
+                     membersArray[i]->getID());
+          }
 
-        if (memberIndex == 0) {
+          // Get user input for member selection
+          mvprintw(maxY / 2 + memberCount - 4, (maxX - 30) / 2,
+                   "Enter member index (or 0 to go back): ");
+          scanw("%d", &memberIndex);
+
+          if (memberIndex == 0) {
             break;  // Go back to main menu
-        }
+          }
 
-        // Validate member index
-        if (memberIndex < 1 || memberIndex > memberCount) {
-            mvprintw(maxY / 2 + memberCount - 3, (maxX - 30) / 2, "Invalid member index!\nPress any key to try again.");
+          // Validate member index
+          if (memberIndex < 1 || memberIndex > memberCount) {
+            mvprintw(maxY / 2 + memberCount - 3, (maxX - 30) / 2,
+                     "Invalid member index!\nPress any key to try again.");
             getch();
             continue;
-        }
+          }
 
-        memberIndex--;  // Adjust index to zero-based
+          memberIndex--;  // Adjust index to zero-based
 
-        // Item Selection Submenu
-        int itemIndex = -1;
-        while (true) {
+          // Item Selection Submenu
+          int itemIndex = -1;
+          while (true) {
             clear();  // Clear screen for item selection
-            mvprintw(maxY / 2 - 6, (maxX - 30) / 2, "Select an item to borrow:");
+            mvprintw(maxY / 2 - 6, (maxX - 30) / 2,
+                     "Select an item to borrow:");
             for (int j = 0; j < itemCount; ++j) {
-                mvprintw(maxY / 2 - 5 + j, (maxX - 30) / 2, "%d: %s (Author: %s)", j + 1,
-                         itemsArray[j]->getTitle().c_str(), itemsArray[j]->getAuthor().c_str());
+              mvprintw(maxY / 2 - 5 + j, (maxX - 30) / 2, "%d: %s (Author: %s)",
+                       j + 1, itemsArray[j]->getTitle().c_str(),
+                       itemsArray[j]->getAuthor().c_str());
             }
 
             // Get user input for item selection
-            mvprintw(maxY / 2 + itemCount - 4, (maxX - 30) / 2, "Enter item index (or 0 to go back): ");
+            mvprintw(maxY / 2 + itemCount - 4, (maxX - 30) / 2,
+                     "Enter item index (or 0 to go back): ");
             scanw("%d", &itemIndex);
 
             if (itemIndex == 0) {
-                break;  // Go back to member selection
+              break;  // Go back to member selection
             }
 
             // Validate item index
             if (itemIndex < 1 || itemIndex > itemCount) {
-                mvprintw(maxY / 2 + itemCount - 3, (maxX - 30) / 2, "Invalid item index!\nPress any key to try again.");
-                getch();
-                continue;
+              mvprintw(maxY / 2 + itemCount - 3, (maxX - 30) / 2,
+                       "Invalid item index!\nPress any key to try again.");
+              getch();
+              continue;
             }
 
             itemIndex--;  // Adjust index to zero-based
@@ -396,23 +531,25 @@ int main() {
             // Call borrowItem function for the selected member and item
             membersArray[memberIndex]->borrowItem(itemsArray[itemIndex]);
 
-            mvprintw(maxY / 2 + itemCount - 2, (maxX - 30) / 2, "Item borrowed successfully!\nPress any key to continue...");
+            mvprintw(
+                maxY / 2 + itemCount - 2, (maxX - 30) / 2,
+                "Item borrowed successfully!\nPress any key to continue...");
             getch();  // Wait for user input
             break;    // Exit after item borrowing
-        }
+          }
 
-        if (itemIndex == 0) {
+          if (itemIndex == 0) {
             continue;  // Go back to member selection
+          }
+          break;  // Exit after borrowing
         }
-        break;  // Exit after borrowing
-    }
 
-    // Clean up dynamic arrays
-    delete[] membersArray;
-    delete[] itemsArray;
+        // Clean up dynamic arrays
+        delete[] membersArray;
+        delete[] itemsArray;
 
-    break;
-}
+        break;
+      }
       case 6: {
         // Get the number of members
         int memberCount = library->getMemberSize();  // Assuming you have a
@@ -560,10 +697,46 @@ int main() {
         getch();    // Wait for the user to press a key
         break;
       }
-      case 8:
-        mvprintw(maxY / 2 + 6, (maxX - 26) / 2,
-                 "Remove Item functionality not implemented yet.\n");
+      case 8: {
+        clear();
+        Item** items =
+            library->getItemList();  // Assuming getItemList() returns Item**
+        int numItems = library->getItemSize();  // Get the number of items
+
+        if (numItems == 0) {
+          mvprintw(maxY / 2 - 3, (maxX - 30) / 2,
+                   "No items found in the library.");
+        } else {
+          mvprintw(maxY / 2 - 5, (maxX - 15) / 2, "Select a item to remove:");
+          for (int i = 0; i < numItems; i++) {
+            mvprintw(maxY / 2 - 3 + i, (maxX - 50) / 2, "%d. ( %s ) by ( %s )",
+                     i + 1, items[i]->getTitle().c_str(),
+                     items[i]->getAuthor().c_str());
+          }
+          mvprintw(maxY / 2 + numItems, (maxX - 35) / 2,
+                   "Enter the index of the item to remove: ");
+          refresh();
+
+          int itemIndex = -1;
+          scanw("%d", &itemIndex);  // Read the index input
+
+          if (itemIndex < 1 || itemIndex > numItems) {
+            mvprintw(maxY / 2 + numItems + 2, (maxX - 30) / 2,
+                     "Invalid index! Press any key to go back.");
+          } else {
+            // Remove the selected member (subtract 1 to match 0-based index)
+            library->removeItem(itemIndex - 1);
+            mvprintw(maxY / 2 + numItems + 2, (maxX - 30) / 2,
+                     "Item removed successfully!");
+          }
+        }
+
+        mvprintw(maxY / 2 + numItems + 4, (maxX - 24) / 2,
+                 "Press any key to return to the main menu.");
+        refresh();  // Show all the updated output on the screen
+        getch();    // Wait for the user to press a key
         break;
+      }
       case 9:
         // Exit the program
         endwin();        // End ncurses mode
