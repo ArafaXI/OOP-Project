@@ -35,7 +35,9 @@ public:
 
     // Borrow pure abstract whatever 
     virtual void Borrow(bool borrow) = 0;
-  
+    
+    virtual bool getisBorrowed() = 0;
+
     // Virtual destructor
     virtual ~Item();
 };

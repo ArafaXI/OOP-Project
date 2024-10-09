@@ -30,11 +30,8 @@ public:
     void borrowItem(int memberIndex, int itemIndex);
     void returnItem(int memberIndex, int itemIndex);
     Item** getItemList();
-    Member** getMemberList();
 
-    int getItemSize();  // New function to get the number of items
-    int getMemberSize();
-
+    int getItemSize() const;  // New function to get the number of items
 
     std::vector<Item*> getItems() const; // Declaration
 };
