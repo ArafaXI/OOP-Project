@@ -23,6 +23,10 @@ public:
     // DisplayInfo function 
     void displayInfo();
 
+    // Saving and Loading file
+    std:: string save();
+    void load(std:: string& data);
+
     // Destructor
     ~Magazine();
 };

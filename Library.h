@@ -7,6 +7,8 @@
 #include "Magazine.h"
 #include "Ebook.h"
 #include <vector>
+#include <fstream> // For saving and loading
+#include <sstream>
 
 class Library {
 private: // Set library attributes
@@ -34,6 +36,10 @@ public:
 
     int getItemSize();  // New function to get the number of items
     int getMemberSize();
+
+    // Saving and Loading the library elements
+    void saveToFile(const std::string& filename);
+    void loadFromFile(const std::string&filename);
 
 
     std::vector<Item*> getItems() const; // Declaration

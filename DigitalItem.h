@@ -5,18 +5,18 @@
 
 class DigitalItem : public Item {
  private:
-  double fileSize;
+  int fileSize;
   std::string Format;
   bool isBorrowed;
 
  public:
   // Constructers
   DigitalItem();
-  DigitalItem(std::string title, std::string author, double fileSize,
+  DigitalItem(std::string title, std::string author, int fileSize,
               std::string Format);
 
   // Getters and Setters for pagecount
-  void setfileSize(double fileSize);
+  void setfileSize(int fileSize);
   int getfileSize();
 
   // Getters and setters for Format
@@ -30,6 +30,9 @@ class DigitalItem : public Item {
   // displayitems
   virtual void displayInfo();
 
+  // saving and loading
+  virtual std::string save();
+  virtual void load(std::string& data);
   // destructor
   virtual ~DigitalItem();
 };

@@ -29,6 +29,9 @@ class PrintedItem : public Item {
   // displayitems
   virtual void displayInfo();
 
+  // loading and saving
+  virtual std:: string save();
+  virtual void load(std:: string& data);
   // destructor
   virtual ~PrintedItem();
 };

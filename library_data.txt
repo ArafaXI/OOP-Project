@@ -1,0 +1,10 @@
+3
+1|Hussein
+3|Dimmy
+20|Hussein
+5
+Ebook|ebook1|richard|429|PDF|Horror|01/09/2027
+Book|book1|Richard|0|||
+Book|book3|book3a|398|Hardcover|Horror|01/02/2026
+Book|book10|harry|429|Hardcover|Horror|01/02/2024
+Magazine|mag3|John|42|Paperback|01/02/2029|3

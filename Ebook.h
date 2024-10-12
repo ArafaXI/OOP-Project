@@ -25,6 +25,12 @@ class Ebook: public DigitalItem{
     // displayInfo function 
     void displayInfo();
 
+    // Saving
+    std::string save();
+
+    // Loading
+    void load(std:: string& data);
+
     // destructor
     ~Ebook();
 };

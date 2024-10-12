@@ -25,6 +25,10 @@ class Book: public PrintedItem{
     // displayInfo function 
     void displayInfo();
 
+    // Saving and Loading
+    std:: string save();
+    void load(std:: string& data);
+
     // destructor
     ~Book();
 };

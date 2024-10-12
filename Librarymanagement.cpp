@@ -19,6 +19,7 @@
 int main() {
   initscr();  // Start ncurses mode
   Library* library = new Library();
+  library -> loadFromFile("library_data.txt");
   int choice = 0;  // Variable to store the user's choice
 
   while (true) {
@@ -777,6 +778,7 @@ int main() {
       case 9:
         // Exit the program
         endwin();        // End ncurses mode
+        library -> saveToFile("library_data.txt"); // save the data
         delete library;  // Clean up the library class and everything inside
         return 0;
       default:
