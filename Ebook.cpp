@@ -1,44 +1,56 @@
 #include "Ebook.h"
+
 #include <sstream>
 
-// Constructors
+// Default constructor
 Ebook::Ebook() {
-  this->setAuthor("");
-  this->setTitle("");
-  this->setfileSize(0);
-  this->setFormat("");
-  this->Borrow(0);
-  this->genre = "";
-  this->publicationDate = "";
+  // Initialize all attributes to default values
+  this->setAuthor("");         // Set author to an empty string
+  this->setTitle("");          // Set title to an empty string
+  this->setfileSize(0);        // Set file size to 0
+  this->setFormat("");         // Set format to an empty string
+  this->Borrow(0);             // Initialize borrowing status to not borrowed
+  this->genre = "";            // Set genre to an empty string
+  this->publicationDate = "";  // Set publication date to an empty string
 }
 
+// Parameterized constructor
 Ebook::Ebook(std::string title, std::string author, double fileSize,
-           std::string Format, std::string genre,
-           std::string publicationDate) {
-  this->setAuthor(author);
-  this->setTitle(title);
-  this->setfileSize(fileSize);
-  this->setFormat(Format);
-  this->Borrow(0);
-  this->genre = genre;
-  this->publicationDate = publicationDate;
+             std::string Format, std::string genre,
+             std::string publicationDate) {
+  // Set the attributes using the provided parameters
+  this->setAuthor(author);      // Set the author from the argument
+  this->setTitle(title);        // Set the title from the argument
+  this->setfileSize(fileSize);  // Set the file size from the argument
+  this->setFormat(Format);      // Set the format from the argument
+  this->Borrow(0);              // Initialize borrowing status to not borrowed
+  this->genre = genre;          // Set the genre from the argument
+  this->publicationDate =
+      publicationDate;  // Set the publication date from the argument
 }
 
-// Getters and setters for genre attribute
-void Ebook::setGenre(std::string genre) { this->genre = genre; }
+// Getters and setters for the genre attribute
+void Ebook::setGenre(std::string genre) {
+  this->genre = genre;  // Set the genre attribute
+}
 
-std::string Ebook::getGenre() { return genre; }
+std::string Ebook::getGenre() {
+  return genre;  // Return the current genre
+}
 
-// Getters and setters for publicationDate attribute
+// Getters and setters for the publication date attribute
 void Ebook::setPublicationDate(std::string publicationDate) {
-  this->publicationDate = publicationDate;
+  this->publicationDate =
+      publicationDate;  // Set the publication date attribute
 }
 
-std::string Ebook::getPublicationDate() { return publicationDate; }
+std::string Ebook::getPublicationDate() {
+  return publicationDate;  // Return the current publication date
+}
 
-// Displayinfo function
-
+// Function to display information about the Ebook
 void Ebook::displayInfo() {
+  // Print out the details of the Ebook
   std::cout << "Title: " << getTitle() << "\n"
             << "Author: " << getAuthor() << "\n"
             << "File Size: " << getfileSize() << "\n"
@@ -48,47 +60,54 @@ void Ebook::displayInfo() {
             << "Is Borrowed: " << (getisBorrowed() ? "Yes" : "No") << "\n";
 }
 
-// Saving
+// Save function to serialize the Ebook attributes to a string
 std::string Ebook::save() {
-    return "Ebook|" + DigitalItem::save() + "|" + genre + "|" + publicationDate; // Call the base class save
+  // Call the base class's save function and append additional attributes
+  return "Ebook|" + DigitalItem::save() + "|" + genre + "|" + publicationDate;
 }
 
-// loading
+// Load function to deserialize the Ebook attributes from a string
 void Ebook::load(std::string& data) {
-    // Start by loading the DigitalItem attributes first
-    DigitalItem::load(data);
+  // Start by loading the DigitalItem attributes first
+  DigitalItem::load(data);
 
-    std::istringstream ss(data);
-    std::string type, tempTitle, tempAuthor, fileSizeStr, Format, genre, publicationDate;
-    int tempfileSize;
+  // Use a string stream to read the data
+  std::istringstream ss(data);
+  std::string type, tempTitle, tempAuthor, fileSizeStr, Format, genre,
+      publicationDate;
+  int tempfileSize;
 
-    // Read the necessary attributes for Ebook
-    std::getline(ss,type, '|');
-    std::getline(ss, tempTitle, '|');   // Title
-    std::getline(ss, tempAuthor, '|');   // Author
-    std::getline(ss, fileSizeStr, '|');  // File Size
-    std::getline(ss, Format, '|');       // Format
-    std::getline(ss, genre, '|');        // Genre
-    std::getline(ss, publicationDate, '|');  // Release Date
+  // Read necessary attributes for the Ebook
+  std::getline(ss, type, '|');             // Read the type (should be "Ebook")
+  std::getline(ss, tempTitle, '|');        // Read the title
+  std::getline(ss, tempAuthor, '|');       // Read the author
+  std::getline(ss, fileSizeStr, '|');      // Read the file size
+  std::getline(ss, Format, '|');           // Read the format
+  std::getline(ss, genre, '|');            // Read the genre
+  std::getline(ss, publicationDate, '|');  // Read the publication date
 
-    try {
-        tempfileSize = std::stoi(fileSizeStr);  // Convert to int
-    } catch (const std::invalid_argument& e) {
-        std::cerr << "error: invalid file size: " << fileSizeStr << std::endl;
-        return;
-    } catch (const std::out_of_range& e) {
-        std::cerr << "Error: File size out of range in stoi: " << fileSizeStr << std::endl;
-        return;
-    }
+  // Convert the file size string to an integer
+  try {
+    tempfileSize = std::stoi(fileSizeStr);  // Convert to int
+  } catch (const std::invalid_argument& e) {
+    std::cerr << "error: invalid file size: " << fileSizeStr
+              << std::endl;  // Handle conversion error
+    return;
+  } catch (const std::out_of_range& e) {
+    std::cerr << "Error: File size out of range in stoi: " << fileSizeStr
+              << std::endl;  // Handle range error
+    return;
+  }
 
-    // Set the attributes
-    setTitle(tempTitle);
-    setAuthor(tempAuthor);
-    setfileSize(tempfileSize);
-    setFormat(Format);
-    setGenre(genre);
-    setPublicationDate(publicationDate);
+  // Set the attributes with the loaded data
+  setTitle(tempTitle);        // Set title from the loaded data
+  setAuthor(tempAuthor);      // Set author from the loaded data
+  setfileSize(tempfileSize);  // Set file size from the loaded data
+  setFormat(Format);          // Set format from the loaded data
+  setGenre(genre);            // Set genre from the loaded data
+  setPublicationDate(
+      publicationDate);  // Set publication date from the loaded data
 }
 
-
-Ebook::~Ebook() {}  // empty because nothing dynamically allocated here
+// Destructor
+Ebook::~Ebook() {}  // No dynamic memory allocated, so no cleanup necessary

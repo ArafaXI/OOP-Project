@@ -1,38 +1,45 @@
 #ifndef EBOOK_H
 #define EBOOK_H
 
-#include "DigitalItem.h"
+#include "DigitalItem.h"  // Include the base class header for DigitalItem
+// The Ebook class is derived from the DigitalItem class and represents an
+// electronic book.
+class Ebook : public DigitalItem {
+ private:
+  std::string genre;  // The genre of the eBook (e.g., fiction, non-fiction)
+  std::string publicationDate;  // The publication date of the eBook
 
-class Ebook: public DigitalItem{
-    private:
-    std:: string genre;
-    std:: string publicationDate;
-    public:
-    // constructers
-    Ebook();
-    Ebook(std:: string title, std:: string author, double fileSize, std:: string Format, std:: string genre, std:: string publicationDate);
+ public:
+  // Default constructor initializes an eBook with default values
+  Ebook();
 
-    // getters and setters for genre attribute
+  // Parameterized constructor initializes an eBook with specific values
+  Ebook(std::string title, std::string author, double fileSize,
+        std::string Format, std::string genre, std::string publicationDate);
 
-    void setGenre(std:: string genre);
-    std:: string getGenre();
+  // Setter for the genre attribute
+  void setGenre(std::string genre);
 
-    // getters and setters for publicationdate attribute
+  // Getter for the genre attribute
+  std::string getGenre();
 
-    void setPublicationDate(std:: string publicationDate);
-    std:: string getPublicationDate();
+  // Setter for the publication date attribute
+  void setPublicationDate(std::string publicationDate);
 
-    // displayInfo function 
-    void displayInfo();
+  // Getter for the publication date attribute
+  std::string getPublicationDate();
 
-    // Saving
-    std::string save();
+  // Function to display information about the eBook
+  void displayInfo();
 
-    // Loading
-    void load(std:: string& data);
+  // Function to save the eBook's data to a string format
+  std::string save();
 
-    // destructor
-    ~Ebook();
+  // Function to load the eBook's data from a string format
+  void load(std::string& data);
+
+  // Destructor to clean up resources (if any)
+  ~Ebook();
 };
 
 #endif
