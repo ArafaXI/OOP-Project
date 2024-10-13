@@ -3,10 +3,11 @@
 
 #include "PrintedItem.h"
 
+//Book class inheris from PrintedItem
 class Book: public PrintedItem{
     private:
-    std:: string genre;
-    std:: string publicationDate;
+    std:: string genre;   //Genre of the book
+    std:: string publicationDate; //Publication of the book
     public:
     // constructers
     Book();
@@ -14,8 +15,8 @@ class Book: public PrintedItem{
 
     // getters and setters for genre attribute
 
-    void setGenre(std:: string genre);
-    std:: string getGenre();
+    void setGenre(std:: string genre); //Set genre of the book
+    std:: string getGenre();          //Get genre of the book
 
     // getters and setters for publicationdate attribute
 
@@ -23,10 +24,12 @@ class Book: public PrintedItem{
     std:: string getPublicationDate();
 
     // displayInfo function 
-    void displayInfo();
+    void displayInfo(); //Outputs the book's details
 
-    // Saving and Loading
-    std:: string save();
+    // Saving and Loading:
+    // Converts the book's attributes into a formatted string for storage 
+    std:: string save(); 
+    // Parses a formatted string to restore the book's attributes
     void load(std:: string& data);
 
     // destructor
