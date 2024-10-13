@@ -1,41 +1,44 @@
 #ifndef MEMBER_H
 #define MEMBER_H
 
-#include "Item.h"
-#include "Ebook.h"
-#include "Book.h"
-#include "Magazine.h"
+#include "Book.h"      // Include the Book class
+#include "Ebook.h"     // Include the Ebook class
+#include "Item.h"      // Include the Item class
+#include "Magazine.h"  // Include the Magazine class
 
 class Member {
  private:
-    std::string name;
-    int ID;
-    int borrowedSize; // Integer to keep track of how many items the Member has borrowed
-    Item** borrowedItems; // Dynamic array of pointers to Items
+  std::string name;      // Member's name
+  int ID;                // Unique identifier for the member
+  int borrowedSize;      // Number of items currently borrowed
+  Item** borrowedItems;  // Dynamic array of pointers to borrowed items
 
  public:
-    // Constructers
-    Member();
-    Member(std::string name, int ID);
+  // Constructors
+  Member();                          // Default constructor
+  Member(std::string name, int ID);  // Constructor with parameters
 
-    // Getters
-    std::string getName();
-    int getID();
-    int getBorrowedSize();
-    Item** getBorrowedItems(); 
+  // Getters
+  std::string getName();      // Returns the member's name
+  int getID();                // Returns the member's ID
+  int getBorrowedSize();      // Returns the number of borrowed items
+  Item** getBorrowedItems();  // Returns the list of borrowed items
 
-    // Setters
-    void setName(std::string newName);
-    void setID(int newID);
-    void setBorrowedSize(int newSize);
+  // Setters
+  void setName(std::string newName);  // Sets the member's name
+  void setID(int newID);              // Sets the member's ID
+  void setBorrowedSize(
+      int newSize);  // Updates the borrowed size (not typically needed)
 
-    // Unique functions
-    void borrowItem(Item* item); // Adds an Item to the member's collection of items.
-    bool returnItem(Item* item); // Removes an Item from the member's borrowed list
-    void displayBorrowedItems(); // Prints out the whole collection of Items that the user currently has, including their Title and author
+  // Unique functions
+  void borrowItem(Item* item);  // Adds an item to the member's borrowed list
+  bool returnItem(
+      Item* item);  // Removes an item from the member's borrowed list
+  void displayBorrowedItems();  // Displays all items currently borrowed by the
+                                // member
 
-    // Destructors
-    ~Member();
+  // Destructor
+  ~Member();  // Cleans up resources
 };
 
 #endif
