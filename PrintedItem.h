@@ -1,37 +1,38 @@
 #ifndef PRINTEDITEM_H
 #define PRINTEDITEM_H
 
-#include "Item.h"
+#include "Item.h"  // Includes the base class
 
-class PrintedItem : public Item {
+class PrintedItem : public Item {  // Derived class from Item
  private:
-  int PageCount;
-  std::string BindingType;
-  bool isBorrowed;
+  int PageCount;  // Number of pages
+  std::string BindingType;  // Type of binding
+  bool isBorrowed;  // Borrowing status
 
  public:
-  // Constructers
-  PrintedItem();
-  PrintedItem(std::string title, std::string author, int PageCount, std::string BindingType);
+  // Constructors
+  PrintedItem();  // Default
+  PrintedItem(std::string title, std::string author, int PageCount, std::string BindingType);  // Parameterized
 
-  // Getters and Setters for pagecount
+  // Getters and setters for page count
   void setPageCount(int PageCount);
   int getPageCount();
 
-  // Getters and setters for bindingtype
+  // Getters and setters for binding type
   void setBindingType(std::string BindingType);
   std::string getBindingType();
 
-  // Borrowing conditions
-  void Borrow(bool BorrowCondition);  // For both borrowing and returning
-  bool getisBorrowed();
+  // Borrowing management
+  void Borrow(bool BorrowCondition);  // Set borrowing status
+  bool getisBorrowed();  // Check if borrowed
 
-  // displayitems
+  // Display item information
   virtual void displayInfo();
 
-  // loading and saving
-  virtual std:: string save();
-  virtual void load(std:: string& data);
+  // Saving and loading data
+  virtual std::string save();  // Save to string
+  virtual void load(std::string& data);  // Load from string
+
   // destructor
   virtual ~PrintedItem();
 };

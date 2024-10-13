@@ -11,7 +11,7 @@ PrintedItem::PrintedItem() {
   this->isBorrowed = false;
 }
 
-// Parameterized constructor
+// Parameterized constructor initializes a PrintedItem with specified values
 PrintedItem::PrintedItem(std::string title, std::string author, int PageCount,
                          std::string BindingType) {
   setAuthor(author);
